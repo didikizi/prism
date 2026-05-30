@@ -1,0 +1,25 @@
+# compiled binary
+bin/
+
+# test artifacts
+*.test
+*.out
+.claude
+coverage.txt
+
+# demo recording output
+*.gif
+*.mp4
+
+# vhs tape output (keep demo.tape, ignore its artifacts)
+*.webm
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode/
+.idea/
+*.swp
+*.swo

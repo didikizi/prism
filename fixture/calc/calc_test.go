@@ -17,9 +17,10 @@ func TestSubtract(t *testing.T) {
 	}
 }
 
+// TestMultiply deliberately fails to show a fail card.
 func TestMultiply(t *testing.T) {
 	got := mul(6, 7)
-	want := 43 // deliberately wrong
+	want := 43 // wrong on purpose
 	if got != want {
 		t.Errorf("\n  got:  %d\n  want: %d\n\n  hint: 6 × 7 is not 43", got, want)
 	}
@@ -29,16 +30,25 @@ func TestDivideByZeroNotHandled(t *testing.T) {
 	t.Error("divide: panics on zero divisor instead of returning an error")
 }
 
+// TestRoundTrip uses subtests (names with /) to exercise that code path.
 func TestRoundTrip(t *testing.T) {
-	for _, tc := range []struct{ a, b, want int }{
-		{1, 1, 2},
-		{0, 0, 0},
-		{-3, 3, 0},
-		{100, -50, 50},
-	} {
-		if got := add(tc.a, tc.b); got != tc.want {
-			t.Errorf("add(%d, %d) = %d, want %d", tc.a, tc.b, got, tc.want)
-		}
+	cases := []struct {
+		name    string
+		a, b, want int
+	}{
+		{"positive", 1, 1, 2},
+		{"zero", 0, 0, 0},
+		{"negative", -3, 3, 0},
+		{"mixed", 100, -50, 50},
+	}
+	for _, tc := range cases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			if got := add(tc.a, tc.b); got != tc.want {
+				t.Errorf("add(%d, %d) = %d, want %d", tc.a, tc.b, got, tc.want)
+			}
+		})
 	}
 }
 

@@ -11,11 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Streaming pipe-filter: `go test -json ./... | prism`
-- Live spinner with pass / fail / skip counters while tests run
+- Live spinner with pass / fail / skip counters while tests run (suppressed when stdout is not a TTY)
 - Per-package result lines printed as each package completes
-- Fail cards — each failure in its own rounded box with test name, package, and assertion output
-- Panic detection — raw panics rendered as a distinct PANIC card with full goroutine trace
-- Final summary panel with totals and top-5 slowest tests
+- Fail cards — status badge, test name, `package · file:line`, and the cleaned assertion message
+- Panic detection — `PANIC` card with the panic headline and a dimmed, truncated stack trace
+- Race detection — `-race` data races rendered as a distinct `RACE` card
+- Build error cards — compiler failures shown inline instead of being swallowed
+- Benchmark support — `-bench` results parsed and rendered as a styled panel with
+  relative-speed bars plus a copy-ready Markdown table; `--bench both|styled|md`.
+  Captures the run hardware (goos/goarch/cpu) and shows it under the panel and as
+  an italic caption above the Markdown table
+- Final summary panel with totals and an aligned top-5 slowest-tests table
 - Border colour reflects overall result (green = all pass, red = any failure)
 - Exit code mirrors test result: non-zero on any failure (CI-safe)
 - `--no-color` flag for plain-text output

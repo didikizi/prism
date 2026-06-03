@@ -1,0 +1,10 @@
+{"Action":"run","Package":"race","Test":"TestRace"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"==================\n"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"WARNING: DATA RACE\n"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"Read at 0x00c0000a4010 by goroutine 8:\n"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"  race.TestRace.func1()\n"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"      race_test.go:19 +0x4c\n"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"==================\n"}
+{"Action":"output","Package":"race","Test":"TestRace","Output":"    testing.go:1465: race detected during execution of test\n"}
+{"Action":"fail","Package":"race","Test":"TestRace","Elapsed":0.01}
+{"Action":"fail","Package":"race","Elapsed":0.02}

@@ -1,0 +1,6 @@
+{"ImportPath":"broken [broken.test]","Action":"build-output","Output":"# broken [broken.test]\n"}
+{"ImportPath":"broken [broken.test]","Action":"build-output","Output":"./broken.go:3:25: undefined: undefinedSymbol\n"}
+{"ImportPath":"broken [broken.test]","Action":"build-fail"}
+{"Action":"start","Package":"broken"}
+{"Action":"output","Package":"broken","Output":"FAIL\tbroken [build failed]\n"}
+{"Action":"fail","Package":"broken","Elapsed":0,"FailedBuild":"broken [broken.test]"}

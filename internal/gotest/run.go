@@ -94,6 +94,10 @@ type Run struct {
 
 	pkgs   []*Package
 	pkgIdx map[string]*Package
+
+	// build-output lines accumulated by ImportPath, attached to a package when
+	// its failure references them via FailedBuild.
+	buildOut map[string][]string
 }
 
 // Env returns a one-line description of the benchmark hardware, or "" if none
@@ -143,9 +147,44 @@ func seconds(s float64) time.Duration {
 	return time.Duration(s * float64(time.Second))
 }
 
+// failedBuildOutput resolves the compiler output for a failed build. It prefers
+// the exact FailedBuild import path, then falls back to any captured build
+// output whose import path starts with the package name (older toolchains that
+// omit the FailedBuild field).
+func (r *Run) failedBuildOutput(failedBuild, pkgName string) []string {
+	if len(r.buildOut) == 0 {
+		return nil
+	}
+	if failedBuild != "" {
+		if out := r.buildOut[failedBuild]; len(out) > 0 {
+			return out
+		}
+	}
+	for path, out := range r.buildOut {
+		if path == pkgName || strings.HasPrefix(path, pkgName+" ") {
+			return out
+		}
+	}
+	return nil
+}
+
 // Add applies one event. It returns the affected package and whether that
 // package just reached a terminal state (so callers can print its result line).
 func (r *Run) Add(ev Event) (pkg *Package, done bool) {
+	// Build failures arrive before any package is created and are keyed by
+	// ImportPath, not Package — handle them before touching the package map so
+	// they don't spawn a phantom empty-named package.
+	switch ev.Action {
+	case "build-output":
+		if r.buildOut == nil {
+			r.buildOut = map[string][]string{}
+		}
+		r.buildOut[ev.ImportPath] = append(r.buildOut[ev.ImportPath], ev.Output)
+		return nil, false
+	case "build-fail":
+		return nil, false
+	}
+
 	p := r.pkg(ev.Package)
 
 	// Benchmarks emit run/output events but never pass/fail, so they are kept
@@ -197,6 +236,9 @@ func (r *Run) Add(ev Event) (pkg *Package, done bool) {
 			r.Fail++
 		} else {
 			p.Outcome, p.Elapsed = Failed, seconds(ev.Elapsed)
+			if out := r.failedBuildOutput(ev.FailedBuild, p.Name); len(out) > 0 {
+				p.Output = append(p.Output, out...)
+			}
 			done = true
 		}
 
@@ -254,12 +296,23 @@ func (r *Run) Failed() bool {
 func (r *Run) Failures() []Failure {
 	var out []Failure
 	for _, p := range r.pkgs {
+		failedNames := map[string]bool{}
+		for _, t := range p.Tests {
+			if t.Outcome == Failed {
+				failedNames[t.Name] = true
+			}
+		}
 		hadTest := false
 		for _, t := range p.Tests {
 			if t.Outcome != Failed {
 				continue
 			}
 			hadTest = true
+			// Skip a parent test whose failure is just a roll-up of a failing
+			// subtest — the leaf "Parent/Child" card carries the real detail.
+			if hasFailingChild(t.Name, failedNames) {
+				continue
+			}
 			out = append(out, Failure{
 				Test:   t.Name,
 				Pkg:    p.Name,
@@ -315,6 +368,18 @@ func classify(out []string) FailKind {
 		}
 	}
 	return Assertion
+}
+
+// hasFailingChild reports whether any failed test name is a subtest of name
+// (i.e. starts with "name/").
+func hasFailingChild(name string, failed map[string]bool) bool {
+	prefix := name + "/"
+	for n := range failed {
+		if strings.HasPrefix(n, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
 func syntheticName(k FailKind) string {

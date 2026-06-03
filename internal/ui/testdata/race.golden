@@ -1,0 +1,26 @@
+
+  FAILURES
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   RACE   TestRace                                                            │
+│  race  ·  race_test.go:19                                                    │
+│                                                                              │
+│  WARNING: DATA RACE                                                          │
+│  Read at 0x00c0000a4010 by goroutine 8:                                      │
+│    race.TestRace.func1()                                                     │
+│        race_test.go:19 +0x4c                                                 │
+│      testing.go:1465: race detected during execution of test                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│    FAIL   1 failed                                                           │
+│                                                                              │
+│   ✓ 0 passed    ✗ 1 failed    ⊘ 0 skipped    ·    1 test in <elapsed>               │
+│                                                                              │
+│   slowest                                                                    │
+│     1  TestRace                            race            10ms              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯

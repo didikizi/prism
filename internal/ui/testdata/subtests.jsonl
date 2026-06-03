@@ -1,0 +1,8 @@
+{"Action":"run","Package":"calc","Test":"TestTable"}
+{"Action":"run","Package":"calc","Test":"TestTable/positive"}
+{"Action":"pass","Package":"calc","Test":"TestTable/positive","Elapsed":0.01}
+{"Action":"run","Package":"calc","Test":"TestTable/negative"}
+{"Action":"output","Package":"calc","Test":"TestTable/negative","Output":"    calc_test.go:48: add(-3, 3) = 1, want 0\n"}
+{"Action":"fail","Package":"calc","Test":"TestTable/negative","Elapsed":0.01}
+{"Action":"fail","Package":"calc","Test":"TestTable","Elapsed":0.02}
+{"Action":"fail","Package":"calc","Elapsed":0.03}

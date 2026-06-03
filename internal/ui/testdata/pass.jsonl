@@ -1,0 +1,5 @@
+{"Action":"run","Package":"calc","Test":"TestAdd"}
+{"Action":"pass","Package":"calc","Test":"TestAdd","Elapsed":0.12}
+{"Action":"run","Package":"calc","Test":"TestSub"}
+{"Action":"pass","Package":"calc","Test":"TestSub","Elapsed":0.34}
+{"Action":"pass","Package":"calc","Elapsed":0.5}

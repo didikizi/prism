@@ -5,7 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.1] - 2026-06-03
+
+### Fixed
+- Build failures now render the compiler error: `build-output`/`build-fail`
+  events (keyed by `ImportPath`, linked via `FailedBuild`) are parsed and
+  attached to the package, instead of being dropped into a phantom package
+
+### Changed
+- A parent test whose only failure is a failing subtest is no longer shown as an
+  empty card — the leaf `Parent/Child` card carries the detail
+
+### Added
+- Golden tests: `internal/ui/testdata/*.jsonl` fixtures → `*.golden` expected
+  output, covering pass / assertion / panic / race / build / subtests / benchmarks
+  (regenerate with `go test ./internal/ui -run TestReportGolden -update`)
 
 ## [0.1.0] - 2026-05-30
 

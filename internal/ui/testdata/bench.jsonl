@@ -1,0 +1,9 @@
+{"Action":"output","Package":"calc","Output":"goos: linux\n"}
+{"Action":"output","Package":"calc","Output":"goarch: amd64\n"}
+{"Action":"output","Package":"calc","Output":"pkg: calc\n"}
+{"Action":"output","Package":"calc","Output":"cpu: Test CPU @ 3.00GHz\n"}
+{"Action":"run","Package":"calc","Test":"BenchmarkAdd"}
+{"Action":"output","Package":"calc","Test":"BenchmarkAdd","Output":"BenchmarkAdd-8 \t1000000000\t0.50 ns/op\t0 B/op\t0 allocs/op\n"}
+{"Action":"run","Package":"calc","Test":"BenchmarkAllocLarge"}
+{"Action":"output","Package":"calc","Test":"BenchmarkAllocLarge","Output":"BenchmarkAllocLarge-8 \t100000\t12000 ns/op\t32792 B/op\t2 allocs/op\n"}
+{"Action":"pass","Package":"calc","Elapsed":1.5}

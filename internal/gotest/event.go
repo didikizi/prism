@@ -6,11 +6,16 @@ import "encoding/json"
 
 // Event is a single cmd/test2json record emitted by `go test -json`.
 type Event struct {
-	Action  string  `json:"Action"`  // run, output, pass, fail, skip, ...
+	Action  string  `json:"Action"`  // run, output, pass, fail, skip, build-output, build-fail
 	Package string  `json:"Package"`
 	Test    string  `json:"Test"`    // empty for package-level events
 	Elapsed float64 `json:"Elapsed"` // seconds
 	Output  string  `json:"Output"`
+
+	// Build-failure fields. Compiler errors arrive as build-output events keyed
+	// by ImportPath; the failing package links to them via FailedBuild.
+	ImportPath  string `json:"ImportPath"`
+	FailedBuild string `json:"FailedBuild"`
 }
 
 // Decode parses one line of the stream. ok is false for non-JSON lines

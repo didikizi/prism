@@ -1,0 +1,7 @@
+{"Action":"run","Package":"calc","Test":"TestMul"}
+{"Action":"output","Package":"calc","Test":"TestMul","Output":"=== RUN   TestMul\n"}
+{"Action":"output","Package":"calc","Test":"TestMul","Output":"    calc_test.go:25: got 42, want 43\n"}
+{"Action":"output","Package":"calc","Test":"TestMul","Output":"--- FAIL: TestMul (0.00s)\n"}
+{"Action":"fail","Package":"calc","Test":"TestMul","Elapsed":0.001}
+{"Action":"output","Package":"calc","Output":"FAIL\n"}
+{"Action":"fail","Package":"calc","Elapsed":0.002}

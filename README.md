@@ -7,6 +7,73 @@
 [![Go Version](https://img.shields.io/badge/go-1.22+-00ADD8?logo=go&logoColor=white)](go.mod)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
+prism reads the `go test -json` event stream and re-renders it — nothing to
+configure, no changes to your tests.
+
+---
+
+## Before / after
+
+The default `go test` output:
+
+```text
+=== RUN   TestCheckout
+--- PASS: TestCheckout (0.31s)
+=== RUN   TestRefund
+    refund_test.go:42: balance = 120, want 100
+--- FAIL: TestRefund (0.02s)
+FAIL
+FAIL    example.com/store    0.353s
+ok      example.com/cache    0.094s
+FAIL
+```
+
+The same run through prism (`go test -json ./... | prism`):
+
+```text
+  ✗  store  350ms  1 failed
+  ✓  cache  90ms  1 ok
+
+  FAILURES
+
+╭──────────────────────────────────────────────────────────────────────╮
+│                                                                      │
+│  ✗ FAIL  TestRefund                                                  │
+│  example.com/store  ·  refund_test.go:42                             │
+│                                                                      │
+│  balance = 120, want 100                                             │
+│                                                                      │
+╰──────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────────────────────────────────────────────╮
+│                                                                      │
+│    FAIL   1 failed                                                   │
+│                                                                      │
+│   ✓ 2 passed    ✗ 1 failed    ⊘ 0 skipped    ·    3 tests in 0.44s   │
+│                                                                      │
+│   slowest                                                            │
+│     1  TestCheckout                        store           310ms     │
+│     2  TestEvict                           cache           80ms      │
+│     3  TestRefund                          store           20ms      │
+│                                                                      │
+╰──────────────────────────────────────────────────────────────────────╯
+```
+
+> In a real terminal it's colour-coded (Catppuccin Mocha) with a live spinner —
+> the block above is monochrome because GitHub strips ANSI.
+
+## Why prism?
+
+[gotestsum](https://github.com/gotestyourself/gotestsum) and
+[tparse](https://github.com/mfridman/tparse) are utilitarian — they make `go test`
+output *manageable*: compact summaries, CI-friendly formats, JUnit XML.
+
+prism is about making it **beautiful**. Failures land in clean rounded cards with
+`file:line` and the assertion message; panics, data races and build errors each
+get their own distinct card; the run closes with a bordered summary and the
+slowest tests. It's optimised for the moment you actually look at a failed run —
+locally or in a screenshot — not for machine post-processing.
+
 ---
 
 ## Install

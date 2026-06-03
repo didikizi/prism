@@ -1,0 +1,9 @@
+{"Action":"run","Package":"chaos","Test":"TestBoom"}
+{"Action":"output","Package":"chaos","Test":"TestBoom","Output":"=== RUN   TestBoom\n"}
+{"Action":"output","Package":"chaos","Test":"TestBoom","Output":"panic: runtime error: index out of range [0] with length 0\n"}
+{"Action":"output","Package":"chaos","Test":"TestBoom","Output":"\n"}
+{"Action":"output","Package":"chaos","Test":"TestBoom","Output":"goroutine 6 [running]:\n"}
+{"Action":"output","Package":"chaos","Test":"TestBoom","Output":"chaos.TestBoom(0x0)\n"}
+{"Action":"output","Package":"chaos","Test":"TestBoom","Output":"\tchaos_test.go:9 +0x18\n"}
+{"Action":"fail","Package":"chaos","Test":"TestBoom","Elapsed":0}
+{"Action":"fail","Package":"chaos","Elapsed":0.003}

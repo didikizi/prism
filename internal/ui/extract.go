@@ -45,6 +45,7 @@ func stripNoise(out []string) []string {
 			strings.HasPrefix(t, "--- SKIP"),
 			strings.HasPrefix(t, "ok  "),
 			strings.HasPrefix(t, "FAIL\t"),
+			strings.HasPrefix(t, "# "), // go build "# import/path" package header
 			strings.HasPrefix(t, "exit status"):
 			continue
 		}
